@@ -1,11 +1,14 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-DOM';
+import Page from "./page.jsx";
 
-const element = <h1 className="element">Кажется, мы подключили React</h1>;
+const element = <h1 className="element">Чатик</h1>;
 
 ReactDOM.render(
-    element,
+    <div>
+        { element }
+        <Page/>
+    </div>,
     document.getElementById('root'),
 );
-
 
