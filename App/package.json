@@ -1,0 +1,35 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "new project",
+  "main": "static_src/index.jsx",
+  "scripts": {
+    "start": "webpack --mode development",
+    "server": "webpack-dev-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stg40stg/js_react.git"
+  },
+  "author": "Farkhad Galeev",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/stg40stg/js_react/issues"
+  },
+  "homepage": "https://github.com/stg40stg/js_react#readme",
+  "dependencies": {
+    "@babel/cli": "^7.8.3",
+    "@babel/core": "^7.8.3",
+    "@babel/preset-env": "^7.8.3",
+    "@babel/preset-react": "^7.8.3",
+    "babel-loader": "^8.0.6",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "webpack": "^4.41.5",
+    "webpack-dev-server": "^3.10.1",
+    "react-DOM": "latest"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.10"
+  }
+}
