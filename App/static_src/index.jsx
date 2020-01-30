@@ -1,14 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-DOM';
-import Page from "./page.jsx";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import Layout from "./layout.jsx";
 
-const element = <h1 className="element">Чатик</h1>;
 
 ReactDOM.render(
-    <div>
-        { element }
-        <Page/>
-    </div>,
-    document.getElementById('root'),
+    <MuiThemeProvider>
+        <Layout/>
+    </MuiThemeProvider>,
+    document.getElementById('root')
 );
 

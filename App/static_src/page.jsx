@@ -1,17 +1,20 @@
 import React from "react";
 import answers from "./answers.js";
+import { TextField, FloatingActionButton } from 'material-ui';
+import SendIcon from 'material-ui/svg-icons/content/send';
 
 export default class Page extends React.Component {
-
-      constructor(props) {
+    constructor(props) {
         super(props);
+        this.textInput = React.createRef();
+        this.chatContainer = React.createRef();
 
         this.state = {
             message: '',
             messages:[]
         };
-
     }
+
     componentDidUpdate(prevProps, prevState) {
         let messages = [...this.state.messages];
         if (messages.length > 0) {
@@ -30,10 +33,23 @@ export default class Page extends React.Component {
                 }
             }
         }
+        this.scrollToBottom();
     }
+    componentDidMount() {
+        this.textInput.current.focus();
+    }
+
+    scrollToBottom() {
+        if (this.chatContainer.current)
+            this.chatContainer.current.scrollTop = this.chatContainer.current.scrollHeight;
+    }
+
+
+
 
     render() {
         return (
+
             <form className="main" onSubmit={(evt)=> {
                 let messages = [...this.state.messages];
                 messages.push({author: 'user', text: this.state.message});
@@ -42,18 +58,26 @@ export default class Page extends React.Component {
                     messages: messages
                 });
                 evt.preventDefault();
-
             }}>
-                <div className="main-window">
-                    {this.state.messages.map((message, index)=>{
-                        return(<div key={index}><span className="authorName">{message.author}</span><br/>{message.text}<br/></div>)
-                    })}
-                </div>
-                <input type="text" cols="300" rows="50" value={this.state.message} onChange={(evt)=>{
-                    this.setState({message:evt.target.value});
-                }}/>
-                <input type="submit" className ="sendbutton" value="Отправить"/>
 
+                <div className="main-window" ref={ this.chatContainer }>
+                    {
+                        this.state.messages.map((message, index) => {
+                            return (<div key={index} className="message" fullWidth={ true } hintText="Введите сообщение"
+                                style={{
+                                    alignSelf: message.author === 'user' ? 'flex-start' : 'flex-end'
+                                    }}>
+                                <span className="authorName">{message.author}</span><br/>{message.text}<br/>
+                            </div>)
+                        })
+                    }
+                </div>
+                <div className="message-wrap">
+                <TextField type="text" fullWidth={ true } hintText="Введите сообщение" value={this.state.message}  ref={this.textInput} onChange={(evt) => {
+                    this.setState({message: evt.target.value});
+                }}/>
+                <FloatingActionButton type="submit" className ="sendbutton" mini={true} value="Отправить"><SendIcon /></FloatingActionButton>
+                </div>
             </form>
         );
     }
