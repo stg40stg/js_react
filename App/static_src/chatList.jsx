@@ -1,68 +1,61 @@
 import React from 'react';
-import {List, ListItem} from 'material-ui/List';
-import ActionGrade from 'material-ui/svg-icons/action/grade';
-import Divider from 'material-ui/Divider';
-import Avatar from 'material-ui/Avatar';
-import {pinkA200, transparent} from 'material-ui/styles/colors';
+import { Link } from 'react-router-dom'
+import { List, ListItem } from 'material-ui/List';
+import { TextField } from 'material-ui';
+import AddIcon from 'material-ui/svg-icons/content/add';
+import ContentSend from 'material-ui/svg-icons/content/send';
+import PropTypes from "prop-types";
 
-const ChatList = () => (
+export default class ChatList extends React.Component {
+    static propTypes = {
+        chats: PropTypes.array.isRequired,
+        addChat: PropTypes.func.isRequired,
+    };
 
-    <div className="list-wrap">
-        <List>
-            <ListItem
-                primaryText="Chelsea Otakan"
-                leftIcon={<ActionGrade color={pinkA200} />}
-                rightAvatar={<Avatar src="images/chexee-128.jpg" />}
-            />
-            <ListItem
-                primaryText="Eric Hoffman"
-                insetChildren={true}
-                rightAvatar={<Avatar src="images/kolage-128.jpg" />}
-            />
-            <ListItem
-                primaryText="James Anderson"
-                insetChildren={true}
-                rightAvatar={<Avatar src="images/jsa-128.jpg" />}
-            />
-            <ListItem
-                primaryText="Kerem Suer"
-                insetChildren={true}
-                rightAvatar={<Avatar src="images/kerem-128.jpg" />}
-            />
-        </List>
-        <Divider inset={true} />
-        <List>
-            <ListItem
-                primaryText="Adelle Charles"
-                leftAvatar={
-                    <Avatar
-                        color={pinkA200} backgroundColor={transparent}
-                        style={{left: 8}}
-                    >
-                        A
-                    </Avatar>
-                }
-                rightAvatar={<Avatar src="images/adellecharles-128.jpg" />}
-            />
-            <ListItem
-                primaryText="Adham Dannaway"
-                insetChildren={true}
-                rightAvatar={<Avatar src="images/adhamdannaway-128.jpg" />}
-            />
-            <ListItem
-                primaryText="Allison Grayce"
-                insetChildren={true}
-                rightAvatar={<Avatar src="images/allisongrayce-128.jpg" />}
-            />
-            <ListItem
-                primaryText="Angel Ceballos"
-                insetChildren={true}
-                rightAvatar={<Avatar src="images/angelceballos-128.jpg" />}
-            />
-        </List>
-    </div>
-);
-export default ChatList;
+    state = {
+        input: '',
+    };
+
+    handleChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
+
+    handleAddChat = () => {
+        if (this.state.input.length > 0) {
+            this.props.addChat(this.state.input);
+            this.setState({ input: '' });
+        }
+    };
+
+    render() {
+        console.log(this.props.chats);
+        const chatElements = this.props.chats.map(chat => {
+            return <Link key={ chat.id } to={ `/chat/${chat.id}` }>
+                <ListItem
+                    primaryText={ chat.name }
+                    leftIcon={ <ContentSend /> } />
+            </Link>});
+
+        return (
+            <List>
+                { chatElements }
+                <ListItem key={"addChatItem"}
+                    leftIcon={ <AddIcon /> }
+                    onClick={ this.handleAddChat }
+                    style={ { height: '60px' } }
+                    children= {<TextField
+                        key={"TextField"}
+                        name="titleInput"
+                        hintText="Добавить новый чат"
+                        onChange={ this.handleChange }
+                        value={ this.state.input }
+                    />}
+                />
+            </List>
+        )
+    }
+}
+
 
 
 
