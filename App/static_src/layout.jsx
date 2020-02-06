@@ -6,7 +6,6 @@ import greeting from "./greeting.js";
 import Chat from "./models/Chat.js";
 import Message from "./models/Message.js";
 import PropTypes from "prop-types";
-import answers from "./answers.js";
 
 
 export default class Layout extends React.Component {
@@ -36,42 +35,15 @@ export default class Layout extends React.Component {
         })
     };
 
-    addMessage = (author, message) => {
-        let chats = [...this.state.chats];
-        let currentChat = chats[this.props.chatId - 1];
-        let chat = Object.assign({}, currentChat, {messages: [...currentChat.messages]});
-        chat.messages.push(new Message(chat.messages.length + 1, author, message));
-        chats[this.props.chatId - 1] = chat;
-        this.setState({chats: chats});
-    };
-
-    componentDidUpdate(prevProps, prevState, undefined) {
-        let chat = this.state.chats[this.props.chatId - 1];
-        console.log(chat);
-        if (chat.messages.length > 0) {
-            let prevChat = prevState.chats[this.props.chatId -1];
-            console.log(prevChat);
-            if (chat.messages.length > prevChat.messages.length) {
-                let lastMessage = chat.messages[chat.messages.length - 1];
-                if (lastMessage.author === 'Me') {
-                    setTimeout(() =>
-                            this.addMessage('', answers[Math.floor(Math.random() * Math.floor(answers.length))])
-                        , 1000);
-                }
-            }
-        }
-    }
-
     render() {
         return (
             <div className="Layout">
-                <Header/>
                 <div className="Layout-wrap">
                     <ChatList
                         chats={ this.state.chats }
                         addChat={ this.addChat }
                     />
-                    <CurrentChat chat = {this.state.chats[this.props.chatId - 1]} addMessage={(message) =>this.addMessage('Me', message)}/>
+                    <CurrentChat chat = {this.state.chats[this.props.chatId - 1]} addMessage={(message) => {console.log(message);}}/>
                 </div>
             </div>
         );
