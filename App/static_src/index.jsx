@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-DOM';
-import Page from "./page.jsx";
-
-const element = <h1 className="element">Чатик</h1>;
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import { BrowserRouter } from "react-router-dom";
+import Router from './router.jsx'
 
 ReactDOM.render(
-    <div>
-        { element }
-        <Page/>
-    </div>,
-    document.getElementById('root'),
+    <BrowserRouter>
+        <MuiThemeProvider>
+            <Router/>
+        </MuiThemeProvider>
+    </BrowserRouter>,
+    document.getElementById('root')
 );
 
