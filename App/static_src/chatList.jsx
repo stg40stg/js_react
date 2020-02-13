@@ -16,7 +16,7 @@ class ChatList extends React.Component {
     };
 
     handleChange = (event) => {
-        this.setState({ input: event.target.value });
+        this.setState({ [event.target.name]: event.target.value });
     };
 
     handleAddChat = () => {
@@ -27,6 +27,7 @@ class ChatList extends React.Component {
     };
 
     render() {
+        console.log(this.props.chats);
         const chatElements = this.props.chats.map(chat => {
             return <Link key={ chat.id } to={ `/chat/${chat.id}` }>
                 <ListItem
