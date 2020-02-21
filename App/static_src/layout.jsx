@@ -30,7 +30,7 @@ class Layout extends React.Component {
             <div className="Layout">
                 <Header/>
                 <div className="Layout-wrap">
-                    <ChatList/>
+                    <ChatList className="blink"/>
                     <CurrentChat chat = {this.findChatById(this.props.chatId)}/>
                 </div>
             </div>

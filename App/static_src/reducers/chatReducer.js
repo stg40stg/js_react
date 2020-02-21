@@ -4,7 +4,7 @@ import { ADD_CHAT } from "../actions/chatAction.js";
 import Chat from "../models/Chat";
 import Message from "../models/Message";
 import greeting from "../greeting";
-import {DELETE_CHAT} from "../actions/chatAction";
+import {CHAT_HAS_NO_NEW_MESSAGE, DELETE_CHAT} from "../actions/chatAction";
 import {DELETE_MESSAGE} from "../actions/messageAction";
 
 
@@ -33,7 +33,12 @@ export default function chatReducer(store = initialStore, action,) {
                 newId = Math.max(newId, message.id);
             }
 
-            chat.messages.push(new Message(newId + 1, action.author, action.message));
+            let newMessage = new Message(newId + 1, action.author, action.message);
+            if (newMessage.author === 'Bot'){
+                chat.hasNewMessages = true;
+            }
+
+            chat.messages.push(newMessage);
             for (let i = 0; i < chats.length; i++){
                 if (chats[i].id === chat.id){
                     chats[i] = chat;
@@ -92,6 +97,19 @@ export default function chatReducer(store = initialStore, action,) {
             for (let i = 0; i < chats.length; i++){
                 if (chats[i].id === action.chat.id){
                     chats.splice(i,1);
+                    break;
+                }
+            }
+
+            return {
+                chats: chats
+            }
+        }
+        case CHAT_HAS_NO_NEW_MESSAGE: {
+            let chats = [...store.chats];
+            for (let i = 0; i < chats.length; i++){
+                if (chats[i].id === action.chat.id){
+                    chats[i].hasNewMessages = false;
                     break;
                 }
             }

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { List, ListItem } from 'material-ui/List';
 import { TextField } from 'material-ui';
 import AddIcon from 'material-ui/svg-icons/content/add';
@@ -8,7 +7,7 @@ import ContentDelete from 'material-ui/svg-icons/content/delete-sweep';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import { addChat, deleteChat } from './actions/chatAction.js';
+import { addChat, deleteChat, markAsHasNoNewMessages } from './actions/chatAction.js';
 import { push } from 'connected-react-router';
 
 
@@ -41,13 +40,17 @@ class ChatList extends React.Component {
         this.props.push(link);
     };
 
-    componentDidUpdate(prevProp, prevState, snapshot){
 
-    };
 
     render() {
         const chatElements = this.props.chats.map(chat => {
-            return <ListItem
+            if (chat.hasNewMessages){
+                setTimeout( () => {
+                    this.props.markAsHasNoNewMessages(chat);
+                },10000)
+            }
+
+            return <ListItem className={(chat.hasNewMessages ? 'blink' : '')}
                 key = {chat.id}
                 primaryText={ chat.name }
                 leftIcon={ <ContentSend onClick={ () => this.handleNavigate(`/chat/${chat.id}`) }/> }
@@ -76,7 +79,7 @@ const mapStateToProps = ({ chatReducer }) => ({
     chats: chatReducer.chats,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ addChat, deleteChat, push }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ addChat, deleteChat, push, markAsHasNoNewMessages }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatList);
 

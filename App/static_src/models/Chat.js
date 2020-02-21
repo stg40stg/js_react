@@ -3,5 +3,6 @@ export default class Chat {
         this.id = id;
         this.name = name;
         this.messages = messages;
+        this.hasNewMessages = false;
     }
 }
