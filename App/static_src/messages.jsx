@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import MessageDelete from "material-ui/svg-icons/content/remove";
+import MessageDelete from "material-ui/svg-icons/navigation/close";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import { deleteMessage} from "./actions/messageAction";
@@ -25,9 +25,9 @@ class Messages extends React.Component {
                         this.props.chat.messages.map((message, index) => {
                             return (<div key={index} className="message"
                                          style={{
-                                             alignSelf: message.author === 'user' ? 'flex-start' : 'flex-end'
+                                             alignSelf: message.author === 'Me' ? 'flex-start' : 'flex-end'
                                          }}>
-                                <MessageDelete onClick={ () => this.handleDeleteMessage(message) }/>
+                                <MessageDelete className="deleteButton" onClick={ () => this.handleDeleteMessage(message) }/>
                                 <span className="authorName">{message.author}</span><br/>{message.text}<br/>
                             </div>)
                         })

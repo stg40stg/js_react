@@ -8,14 +8,17 @@ body{
 }
 .main{
     height: 100%;
-    width: 50%;
+    width: 100%;
     margin: auto;
-    display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
 
 }
+.form-wrap{
+    width: 100%;
+}
+
 .main input{
     border:1px solid #9E9E9E;
     color: #000000;
@@ -35,7 +38,7 @@ body{
     flex-direction: column;
     background-color: #e2e2e2;
     height: 500px;
-    width: 200%;
+    width: 100%;
     padding: 20px;
     overflow-y: scroll;
 
@@ -75,11 +78,13 @@ body{
     font-size: 18px;
     margin: 5px;
     /*max-width: 100px;*/
+    position: relative;
+    min-width: 15%;
+
 }
 .message-wrap{
-    width: 200%;
-    display: flex;
-    margin: 10px 0 0 0;
+    width: 50%;
+    margin: 20px auto;
 }
 .Layout{
 
@@ -92,7 +97,7 @@ body{
 }
 .header-wrap{
     display: flex;
-    margin: 20px 0px 20px 20px;
+    margin: 20px 0 20px 20px;
 }
 .logo{
 
@@ -100,20 +105,27 @@ body{
 .logo-header{
     margin: 0 0 0 45px;
 }
+.deleteButton{
+    position: absolute;
+    cursor: pointer;
+    left: 75%;
+    width: 10px;
+    height: 10px;
+}
 
+
+@-webkit-keyframes pulsate {
+    50% { color: #fff; text-shadow: 0 -1px rgba(0,0,0,.3), 0 0 5px #ffd, 0 0 8px #fff; }
+}
+@keyframes pulsate {
+    50% { color: #fff; text-shadow: 0 -1px rgba(0,0,0,.3), 0 0 5px #ffd, 0 0 8px #fff; }
+}
 .blink {
-    animation: blink-animation 1s steps(5, start) infinite;
-    -webkit-animation: blink-animation 1s steps(5, start) infinite;
-}
-@keyframes blink-animation {
-    to {
-        visibility: hidden;
-    }
-}
-@-webkit-keyframes blink-animation {
-    to {
-        visibility: hidden;
-    }
+    color: rgb(245,245,245);
+    text-shadow: 0 -1px rgba(0,0,0,.1);
+    background: green;
+    -webkit-animation: pulsate 1.2s linear infinite;
+    animation: pulsate 1.2s linear infinite;
 }
 
 
