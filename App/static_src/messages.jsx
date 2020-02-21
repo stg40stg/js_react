@@ -1,42 +1,46 @@
 import React from "react";
 import PropTypes from 'prop-types';
+import MessageDelete from "material-ui/svg-icons/content/remove";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import { deleteMessage} from "./actions/messageAction";
 
 
 
-export default class Messages extends React.Component {
+class Messages extends React.Component {
     static propTypes = {
-        messages: PropTypes.array.isRequired,
+        chat: PropTypes.object.isRequired,
+    };
+
+    handleDeleteMessage = (message) => {
+        this.props.deleteMessage(this.props.chat.id, message.id);
     };
 
     render() {
-        // const { chatId, chats, messages } = this.props;
-        //
-        // const messageElements = chats[chatId].messageList.map(messageId => (
-        //     <Message
-        //         key={ messageId }
-        //         text={ messages[messageId].text }
-        //         sender={ messages[messageId].author }
-        //     />
-        // ));
+
         return (
             <div>
-                {/*<div>*/}
-                {/*    {messageElements}*/}
-                {/*</div>*/}
                 <div className="main-window" ref={this.chatContainer}>
                     {
-                        this.props.messages.map((message, index) => {
+                        this.props.chat.messages.map((message, index) => {
                             return (<div key={index} className="message"
                                          style={{
                                              alignSelf: message.author === 'user' ? 'flex-start' : 'flex-end'
                                          }}>
+                                <MessageDelete onClick={ () => this.handleDeleteMessage(message) }/>
                                 <span className="authorName">{message.author}</span><br/>{message.text}<br/>
                             </div>)
                         })
                     }
                 </div>
-
             </div>
         )
     }
 }
+const mapStateToProps = ({ chatReducer }) => ({
+
+});
+
+const mapDispatchToProps = dispatch => bindActionCreators({ deleteMessage }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Messages);

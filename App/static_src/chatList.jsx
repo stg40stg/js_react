@@ -1,18 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { List, ListItem } from 'material-ui/List';
 import { TextField } from 'material-ui';
 import AddIcon from 'material-ui/svg-icons/content/add';
 import ContentSend from 'material-ui/svg-icons/content/send';
+import ContentDelete from 'material-ui/svg-icons/content/delete-sweep';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
-import { addChat } from './actions/chatAction.js';
+import { addChat, deleteChat } from './actions/chatAction.js';
+import { push } from 'connected-react-router';
+
 
 class ChatList extends React.Component {
 
+    static propTypes = {
+        push: PropTypes.func.isRequired,
+    };
+
     state = {
-        input: '',
+        titleInput: '',
     };
 
     handleChange = (event) => {
@@ -20,35 +27,46 @@ class ChatList extends React.Component {
     };
 
     handleAddChat = () => {
-        if (this.state.input.length > 0) {
-            this.props.addChat(this.state.input);
-            this.setState({ input: '' });
+        if (this.state.titleInput.length > 0) {
+            this.props.addChat(this.state.titleInput);
+            this.setState({ titleInput: '' });
         }
     };
 
+    handleDeleteChat = (chat) => {
+        this.props.deleteChat(chat);
+    };
+
+    handleNavigate = (link) => {
+        this.props.push(link);
+    };
+
+    componentDidUpdate(prevProp, prevState, snapshot){
+
+    };
+
     render() {
-        console.log(this.props.chats);
         const chatElements = this.props.chats.map(chat => {
-            return <Link key={ chat.id } to={ `/chat/${chat.id}` }>
-                <ListItem
-                    primaryText={ chat.name }
-                    leftIcon={ <ContentSend /> } />
-            </Link>});
+            return <ListItem
+                key = {chat.id}
+                primaryText={ chat.name }
+                leftIcon={ <ContentSend onClick={ () => this.handleNavigate(`/chat/${chat.id}`) }/> }
+                rightIcon={ <ContentDelete onClick={ () => this.handleDeleteChat(chat) }/>}
+            />});
 
         return (
             <List>
                 { chatElements }
                 <ListItem key={"addChatItem"}
-                    leftIcon={ <AddIcon /> }
-                    onClick={ this.handleAddChat }
-                    style={ { height: '60px' } }
-                    children= {<TextField
-                        key={"TextField"}
-                        name="titleInput"
-                        hintText="Добавить новый чат"
-                        onChange={ this.handleChange }
-                        value={ this.state.input }
-                    />}
+                          leftIcon={ <AddIcon onClick={this.handleAddChat }/> }
+                          style={ { height: '60px' } }
+                          children= {<TextField
+                              key={"TextField"}
+                              name="titleInput"
+                              hintText="Добавить новый чат"
+                              onChange={ this.handleChange }
+                              value={ this.state.titleInput }
+                          />}
                 />
             </List>
         )
@@ -58,7 +76,7 @@ const mapStateToProps = ({ chatReducer }) => ({
     chats: chatReducer.chats,
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({ addChat }, dispatch);
+const mapDispatchToProps = dispatch => bindActionCreators({ addChat, deleteChat, push }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatList);
 

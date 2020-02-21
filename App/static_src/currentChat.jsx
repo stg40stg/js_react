@@ -9,7 +9,7 @@ import {connect} from "react-redux";
 
 class CurrentChat extends React.Component {
     static propTypes = {
-        chat: PropTypes.object.isRequired
+        chat: PropTypes.object
     };
 
     constructor(props) {
@@ -28,7 +28,9 @@ class CurrentChat extends React.Component {
     }
 
     componentDidMount() {
-        this.textInput.current.focus();
+        if (this.textInput.current) {
+            this.textInput.current.focus();
+        }
     }
 
     scrollToBottom() {
@@ -37,31 +39,36 @@ class CurrentChat extends React.Component {
     }
 
     render() {
-        return (
-            <div className="form-wrap">
-                <form className="main" onSubmit={(evt) => {
-                    this.props.addMessage(this.state.message, 'Me', this.props.chat.id - 1);
-                    this.setState({
-                        message: '',
-                    });
-                    evt.preventDefault();
-                }}>
+        if (this.props.chat) {
+            return (
+                <div className="form-wrap">
+                    <form className="main" onSubmit={(evt) => {
+                        this.props.addMessage(this.state.message, 'Me', this.props.chat.id);
+                        this.setState({
+                            message: '',
+                        });
+                        evt.preventDefault();
+                    }}>
 
-                    <Messages
-                        messages={this.props.chat.messages}
-                        ref={this.chatContainer}
-                    />
-                    <div className="message-wrap">
-                        <TextField type="text" hintText="Введите сообщение" value={this.state.message}
-                                   ref={this.textInput} onChange={(evt) => {
-                            this.setState({message: evt.target.value});
-                        }}/>
-                        <FloatingActionButton type="submit" className="sendButton" mini={true}
-                                              value="Отправить"><SendIcon/></FloatingActionButton>
-                    </div>
-                </form>
-            </div>
-        );
+                        <Messages
+                            chat={this.props.chat}
+                            ref={this.chatContainer}
+                        />
+                        <div className="message-wrap">
+                            <TextField type="text" hintText="Введите сообщение" value={this.state.message}
+                                       ref={this.textInput} onChange={(evt) => {
+                                this.setState({message: evt.target.value});
+                            }}/>
+                            <FloatingActionButton type="submit" className="sendButton" mini={true}
+                                                  value="Отправить"><SendIcon/></FloatingActionButton>
+                        </div>
+                    </form>
+                </div>
+            );
+        }
+        else {
+            return null;
+        }
     }
 }
 
